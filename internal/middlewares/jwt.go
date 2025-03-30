@@ -11,10 +11,8 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-// คีย์ลับสำหรับการเข้ารหัส JWT (ควรเก็บใน environment variable)
 var jwtSecret = []byte("jwt")
 
-// Claims คือโครงสร้างข้อมูลที่จะเก็บใน JWT
 type Claims struct {
 	UserID     string `json:"user_id"`
 	Username   string `json:"username"`
@@ -25,7 +23,6 @@ type Claims struct {
 func GenerateToken(userID, username, hospitalID string) (string, error) {
 	expirationTime := time.Now().Add(1 * time.Hour)
 
-	// สร้าง claims
 	claims := &Claims{
 		UserID:     userID,
 		Username:   username,
@@ -37,10 +34,8 @@ func GenerateToken(userID, username, hospitalID string) (string, error) {
 		},
 	}
 
-	// สร้าง token
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
-	// ลงชื่อ token ด้วยคีย์ลับ
 	tokenString, err := token.SignedString(jwtSecret)
 	if err != nil {
 		return "", err
@@ -49,11 +44,8 @@ func GenerateToken(userID, username, hospitalID string) (string, error) {
 	return tokenString, nil
 }
 
-// ParseToken แยกและตรวจสอบความถูกต้องของ token
 func ParseToken(tokenString string) (*Claims, error) {
-	// แยก token
 	token, err := jwt.ParseWithClaims(tokenString, &Claims{}, func(token *jwt.Token) (interface{}, error) {
-		// ตรวจสอบว่าใช้อัลกอริธึมที่ถูกต้องหรือไม่
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 		}
@@ -64,7 +56,6 @@ func ParseToken(tokenString string) (*Claims, error) {
 		return nil, err
 	}
 
-	// ตรวจสอบว่า token ถูกต้องหรือไม่
 	if claims, ok := token.Claims.(*Claims); ok && token.Valid {
 		return claims, nil
 	}
