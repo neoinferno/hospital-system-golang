@@ -21,6 +21,15 @@ VALUES (
     CURRENT_TIMESTAMP
 );
 
+INSERT INTO "public"."staffs" ("id", "username", "password", "hospital_id", "created_at", "updated_at") 
+VALUES 
+('31e4be6d-e4b3-49d0-8c8f-cd0d0f660289',
+ 'admin',
+ '$2a$10$dT4Gh/FwogNT6itNel3HguCD60bXY8J0YPEhqRCq.O5qIBPFoiRSC', 
+ 'eb83e5fb-2662-4edf-b7ec-4f7b8cd6feb5', 
+  CURRENT_TIMESTAMP, 
+  CURRENT_TIMESTAMP);
+
 INSERT INTO patients (id, hospital_id, email, first_name_th, last_name_th, middle_name_th, first_name_en, last_name_en, middle_name_en, date_of_birth, patient_hn, national_id,
 passport_id, gender, phone_number, country_code, created_at, updated_at)
 VALUES (
